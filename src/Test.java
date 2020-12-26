@@ -1,6 +1,7 @@
 import java.sql.SQLOutput;
 
 public class Test {
+
     public static void main(String[] args) {
         /*
          * 创建一个对象
@@ -38,6 +39,6 @@ public class Test {
         /*
          * 需求：查询客户的订单金额
          */
-        System.out.println("订单金额：" + order.getAmmount());
+        System.out.println("订单金额：" + customer.getOrder().getAmmount());
     }
 }

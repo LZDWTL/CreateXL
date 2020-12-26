@@ -6,6 +6,6 @@ public class Student {
     String phonenumber; //电话号码
     String id;    //身份id
 
-    List<Course> courseList;
-    List<Teacher> teacherList;
+    List<Course> courseList;   //一个学生有很多科目
+    List<Teacher> teacherList;  //一个学生有很多老师， 列表，老师
 }
