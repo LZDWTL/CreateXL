@@ -18,13 +18,24 @@ public class ReadMain {
 
 //            File file = new File("D:\\WorkSpace\\JavaWorkSpce\\ideal\\2020-12\\2020-12-15\\src\\users.xlsx");
 //            File file = new File("src/users.xlsx");
-            InputStream in = Class.forName("ReadMain").getResourceAsStream("/users.xlsx");
-            ReadExcel read = new ReadExcel();  //创建对象
+            InputStream inuser = Class.forName("ReadMain").getResourceAsStream("/users.xlsx");
+            InputStream inproduct = Class.forName("ReadMain").getResourceAsStream("/Products.xlsx");
+            ReadUser readuser = new ReadUser();  //创建对象
+            ReadProduct readproduct = new ReadProduct();  //创建对象
 //            User[] users = read.readExcel(file);
-            User[] users = read.readExcel(in);
+            User[] users = readuser.readUser(inuser);
+            Product[] products = readproduct.readProduct(inproduct);
             for (int i = 0; i < users.length; i++) {
                 if (username.equals(users[i].getUsername()) && password.equals(users[i].getPassword())) {
                     System.out.println("登陆成功！");
+
+                    for(Product product:products){
+                        System.out.print(product.getId());
+                        System.out.print("\t" + product.getName());
+                        System.out.print("\t" + product.getPrice());
+                        System.out.println("\t" + product.getDescribe());
+                    }
+
                     bool = false;
                     break;
                 } else {
@@ -34,6 +45,7 @@ public class ReadMain {
             System.out.print("\t" + users[i].getPassword());
             System.out.print("\t" + users[i].getAddress());
             System.out.println("\t" + users[i].getPhone());*/
+
             }
         }
 //    }

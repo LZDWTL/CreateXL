@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 
-public class ReadExcel {
-    public User[] readExcel(InputStream in) {
+public class ReadUser {
+    public User[] readUser(InputStream in) {
         User users[] = null;
         try {
 //            XSSFWorkbook xw = new XSSFWorkbook(new FileInputStream(file));
