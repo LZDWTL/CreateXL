@@ -7,12 +7,15 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.DecimalFormat;
 
 public class ReadExcel {
-    public User[] readExcel(File file) {
+    public User[] readExcel(InputStream in) {
         User users[] = null;
         try {
-            XSSFWorkbook xw = new XSSFWorkbook(new FileInputStream(file));
+//            XSSFWorkbook xw = new XSSFWorkbook(new FileInputStream(file));
+            XSSFWorkbook xw = new XSSFWorkbook(in);
             XSSFSheet xs = xw.getSheetAt(0);
             users = new User[xs.getLastRowNum()];
 //            System.out.println("行号是"+xs.getLastRowNum());
@@ -59,7 +62,15 @@ public class ReadExcel {
                 value = cell.getBooleanCellValue() + "";
                 break;
             case NUMERIC:
-                value = cell.getNumericCellValue() + "";
+                DecimalFormat df = new DecimalFormat("#");   //改造让纯数字编程字符串
+//                value = cell.getNumericCellValue() + "";  //非字符串类型和一个空字符串连接，最终类型时String
+                value=df.format(cell.getNumericCellValue());   //改造让纯数字编程字符串
+
+//                value=String.valueOf(cell.getNumericCellValue());
+                /*
+                如果使用这种转化方法和上面的用 + 连接的方法一样。
+                则会保留 double 的 .0 以及数字过大或者过小会导致输出科学计数法，而使用DecimalFormat则不会
+                */
                 break;
             case FORMULA:
                 value = cell.getCellFormula();
