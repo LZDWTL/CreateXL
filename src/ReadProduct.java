@@ -45,9 +45,45 @@ public class ReadProduct {
         return products;
     }
 
+    public Product getProductBuId(String id,InputStream in) {
+
+        try {
+
+            XSSFWorkbook xw = new XSSFWorkbook(in);
+            XSSFSheet xs = xw.getSheetAt(0);
+
+            for (int j = 1; j <= xs.getLastRowNum(); j++) {     //循环行
+                XSSFRow row = xs.getRow(j);
+                Product product = new Product();//每循环一次就把电子表格的一行的数据给对象赋值
+                for (int k = 0; k < row.getLastCellNum(); k++) {
+                    XSSFCell cell = row.getCell(k);       //循环单元格
+
+                    if (cell == null)
+                        continue;
+                    if (k == 0) {
+                        product.setId(this.getValue(cell));//给id属性赋值
+                    } else if (k == 1) {
+                        product.setName(this.getValue(cell));//给name属性赋值
+                    } else if (k == 2) {
+                        product.setPrice(Float.valueOf(this.getValue(cell)));//给price属性赋值,并将String 类型转为float
+                    } else if (k == 3) {
+                        product.setDescribe(this.getValue(cell));//给describe属性赋值
+                    }
+                }
+                if(id.equals(product.getId())){
+                    return product;
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private String getValue(XSSFCell cell) {
         String value;
-        CellType type = cell.getCellTypeEnum();
+        CellType type = cell.getCellType();
 
         switch (type) {
             case STRING:
