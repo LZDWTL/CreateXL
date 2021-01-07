@@ -3,6 +3,15 @@ public class User {
     private String password;
     private String address;
     private String phone;
+    private ProductOrder productOrder;
+
+    public ProductOrder getProductOrder() {
+        return productOrder;
+    }
+
+    public void setProductOrder(ProductOrder productOrder) {
+        this.productOrder = productOrder;
+    }
 
     public String getUsername() {
         return username;

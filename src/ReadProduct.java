@@ -45,7 +45,7 @@ public class ReadProduct {
         return products;
     }
 
-    public Product getProductBuId(String id,InputStream in) {
+    public Product getProductById(String id,InputStream in) {
 
         try {
 
