@@ -1,4 +1,11 @@
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.RichTextString;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
@@ -7,8 +14,10 @@ public class ReadMain {
     /*
      创建一个购物车数组：存的是商品
     */
-    static Product carts[] = new Product[3];
-    static int j=0;
+    private static Product carts[] = new Product[3];
+    private static int j=0;
+    public static String outputFile = "D:\\WorkSpace\\JavaWorkSpce\\ideal\\2020-12\\2020-12-15\\src\\ProductOrder.xls";
+
     public static void main(String[] args) throws ClassNotFoundException, IOException {
         boolean bool = true;
 
@@ -85,8 +94,12 @@ public class ReadMain {
                                 3、把购物车中的商品写入ProductOrder.xlsx文件
                                 */
                                 ProductOrder order=new ProductOrder();
+                                /*
+                                 * 将用户和订单联系起来
+                                 */
                                 users[i].setProductOrder(order);
-
+                                CreateOrder(users[i].getUsername(),carts);
+                                System.exit(0);
                                 break;
                             default:
                                 System.out.println("Error！");
@@ -132,5 +145,61 @@ public class ReadMain {
             System.out.println("--->购物车中无商品");
         }
     }
+
+    public static void CreateOrder(String name,Product carts[]){
+        try {
+            int i=0;
+            int j=1;
+            // 创建新的Excel 工作簿
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            // 在Excel工作簿中建一工作表，其名为缺省值
+            // 如要新建一名为"效益指标"的工作表，其语句为：
+            HSSFSheet sheet = workbook.createSheet(name+"的订单");
+            // 在索引0的位置创建行（最顶端的行）
+            String ordertitle[]={"用户名","商品id","数量","需付","实付","订单日期"};
+            String ordermessage[]={name,carts[i].getId(),String.valueOf(i+1),String.valueOf(carts[i].getPrice()*(i+1)),String.valueOf(carts[i].getPrice()*(i+1)),"2020/1/7"};
+            setData(ordertitle,sheet,0);
+            while(carts[i]!=null){
+                setData(ordermessage,sheet,i+1);
+                i++;
+            }
+
+            // 新建一输出文件流
+            FileOutputStream fOut = new FileOutputStream(outputFile);
+            // 把相应的Excel 工作簿存盘
+            workbook.write(fOut);
+            fOut.flush();
+            // 操作结束，关闭文件
+            fOut.close();
+            System.out.println("订单已生成！");
+        } catch (Exception e) {
+            System.out.println("已运行 xlCreate() : " + e);
+        }
+    }
+
+    public static void setData(String orderarray[],HSSFSheet sheet,int i){
+
+        HSSFRow row_i = sheet.createRow(i);
+        //在索引0的位置创建单元格（左上端）
+
+        for(int k=0; k<orderarray.length; k++){
+
+            HSSFCell cell_k = row_i.createCell(k);
+            cell_k.setCellValue(orderarray[k]);
+        }
+    }
+
+    public static void setData(Product orderarray[],HSSFSheet sheet,int i){
+
+        HSSFRow row_i = sheet.createRow(i);
+        //在索引0的位置创建单元格（左上端）
+
+        for(int k=0; k<6; k++){
+
+            HSSFCell cell_k = row_i.createCell(k);
+            cell_k.setCellValue((RichTextString) orderarray[k]);
+        }
+    }
+
 }
 
